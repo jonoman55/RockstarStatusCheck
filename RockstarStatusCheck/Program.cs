@@ -1,6 +1,6 @@
-﻿using System.Linq;
-using RockstarStatusCheck.Classes;
-using RockstarStatusCheck.Tools;
+﻿using RockstarStatusCheck.Controllers;
+using RockstarStatusCheck.Enums;
+using RockstarStatusCheck.Handlers;
 using System;
 
 namespace RockstarStatusCheck
@@ -11,24 +11,11 @@ namespace RockstarStatusCheck
         {
             try
             {
-                var statuses = StatusHandler.GetServiceStatuses();
-                if (statuses.All(s => s.Status is Status.Up))
-                {
-                    ConsoleColors.WriteWithColor("All Rockstar Services Operational");
-                }
-                else
-                {
-                    foreach (var status in statuses)
-                    {
-                        ConsoleColors.WriteWithColor(status);
-                    }
-                }
-                Console.WriteLine("Press Enter to exit...");
-                Console.ReadLine();
+                RockstarServices.RunChecks();
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                ConsoleHandler.WriteWithColor(ex.Message, ConsoleColor.Red, LogLevel.Error);
             }
         }
     }

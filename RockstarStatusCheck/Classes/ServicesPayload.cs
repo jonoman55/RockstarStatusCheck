@@ -1,6 +1,9 @@
-﻿namespace RockstarStatusCheck.Classes
+﻿using RockstarStatusCheck.Enums;
+using RockstarStatusCheck.Interfaces;
+
+namespace RockstarStatusCheck.Classes
 {
-    public class ServiceStatus
+    public class ServicesPayload : IPayload, IStatus
     {
         public int Id { get; set; }
         public string Name { get; set; }
