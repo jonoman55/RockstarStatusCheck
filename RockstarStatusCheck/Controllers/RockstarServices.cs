@@ -11,9 +11,20 @@ namespace RockstarStatusCheck.Controllers
         {
             // Start logging
             LoggingHandler.StartLogging();
-            Console.WriteLine();
 
             // Fetch and Print Services and Statuses
+            ServicesCheck();
+
+            // Fetch and Print Platform Statuses
+            PlatformsCheck();
+
+            // Exit on user input or 5 second timeout
+            LoggingHandler.ExitLogging();
+        }
+
+        private static void ServicesCheck()
+        {
+            Console.WriteLine();
             foreach (var (check, statuses) in EnumHandler.ForEachAll())
             {
                 ConsoleHandler.WriteWithColor(check.ToString(), ConsoleColor.Magenta, LogLevel.Info);
@@ -28,21 +39,16 @@ namespace RockstarStatusCheck.Controllers
                 }
                 Console.WriteLine();
             }
+        }
 
-            // Fetch and Print Platform Statuses
+        private static void PlatformsCheck()
+        {
             foreach (var (check, statuses) in EnumHandler.ForEachPlatform())
             {
                 ConsoleHandler.WriteWithColor(check.ToString(), ConsoleColor.Magenta, LogLevel.Info);
                 ConsoleHandler.PrintAllPlaforms(statuses);
                 Console.WriteLine();
             }
-
-            // Print Exit
-            Console.WriteLine("Press Enter to exit...");
-            Console.ReadLine();
-
-            // Exit Logging
-            LoggingHandler.ExitLogging();
         }
     }
 }

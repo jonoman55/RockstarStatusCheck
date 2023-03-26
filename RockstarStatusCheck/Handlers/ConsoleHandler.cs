@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq; 
+using System.Linq;
+using System.Threading.Tasks;
 using RockstarStatusCheck.Classes;
 using RockstarStatusCheck.Enums;
 using RockstarStatusCheck.Interfaces;
@@ -97,6 +98,20 @@ namespace RockstarStatusCheck.Handlers
                     PrintPlatformStatus(ps);
                 }
             }
+        }
+
+        /// <summary>
+        /// Start a new Task for Console.ReadLine with specified timeout (TimeSpan).
+        /// <br />
+        /// If no user input is detected after the specified TimeSpan then the Task ends.
+        /// </summary>
+        /// <param name="timeout">Timeout</param>
+        public static string ConsoleReadLineWithTimeout(TimeSpan timeout)
+        {
+            Task<string> task = Task.Factory.StartNew(Console.ReadLine);
+            return Task.WaitAny(new Task[] { task }, timeout) == 0
+                ? task.Result
+                : " ";
         }
     }
 }
