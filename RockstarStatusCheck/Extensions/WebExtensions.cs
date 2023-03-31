@@ -4,12 +4,14 @@ namespace RockstarStatusCheck.Extensions
 {
     public static class WebExtensions
     {
-        public static HttpWebResponse CheckResponse(this HttpWebResponse response) => 
-            response.StatusCode != HttpStatusCode.OK 
-                ? throw new WebException("Error reaching Rockstar Services") 
+        private const string Message = "Error Reaching Rockstar Services";
+
+        public static HttpWebResponse CheckResponse(this HttpWebResponse response) =>
+            response.StatusCode != HttpStatusCode.OK
+                ? throw new WebException(Message)
                 : response;
 
         public static HttpWebResponse GetServiceResponse(this string uri) =>
-            (WebRequest.Create(uri) as HttpWebRequest).GetResponse() as HttpWebResponse;
+            (HttpWebResponse)((HttpWebRequest)WebRequest.Create(uri)).GetResponse();
     }
 }

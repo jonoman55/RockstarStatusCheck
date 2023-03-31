@@ -9,7 +9,7 @@ namespace RockstarStatusCheck.Handlers
     {
         #region Unused Code
         public static IEnumerable<ServicesPayload> ServicesStatuses =>
-            new List<ServicesPayload>("services".RockstartJsonToJToken().Select(token => new ServicesPayload()
+            new List<ServicesPayload>("services".RockstarJsonToJToken().Select(token => new ServicesPayload()
             {
                 Id = token.JTokenToInt("id"),
                 Name = token.JTokenToString("name"),
@@ -19,7 +19,7 @@ namespace RockstarStatusCheck.Handlers
             }));
 
         public static IEnumerable<ServicesPayload> StatusesStatuses =>
-            new List<ServicesPayload>("statuses".RockstartJsonToJToken().Select(token => new ServicesPayload()
+            new List<ServicesPayload>("statuses".RockstarJsonToJToken().Select(token => new ServicesPayload()
             {
                 Id = token.JTokenToInt("id"),
                 Name = token.JTokenToString("name"),
@@ -30,7 +30,7 @@ namespace RockstarStatusCheck.Handlers
         #endregion
 
         public static IEnumerable<ServicesPayload> GetStatuses(string name) =>
-            new List<ServicesPayload>(name.RockstartJsonToJToken().Select(token => new ServicesPayload()
+            new List<ServicesPayload>(name.RockstarJsonToJToken().Select(token => new ServicesPayload()
             {
                 Id = token.JTokenToInt("id"),
                 Name = token.JTokenToString("name"),
@@ -40,7 +40,7 @@ namespace RockstarStatusCheck.Handlers
             }));
 
         public static IEnumerable<StatusesPayload> PlatformStatuses =>
-            new List<StatusesPayload>("statuses".RockstartJsonToJToken().Select(token => new StatusesPayload()
+            new List<StatusesPayload>("statuses".RockstarJsonToJToken().Select(token => new StatusesPayload()
             {
                 Id = token.JTokenToInt("id"),
                 Name = token.JTokenToString("name"),

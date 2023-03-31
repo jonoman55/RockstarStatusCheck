@@ -93,7 +93,7 @@ namespace RockstarStatusCheck.Handlers
             foreach (var plaform in statuses.Select(s => s))
             {
                 WriteWithColor(plaform.Name, ConsoleColor.Cyan, LogLevel.Info);
-                foreach (var ps in plaform.Platforms)
+                foreach (Platform ps in plaform.Platforms)
                 {
                     PrintPlatformStatus(ps);
                 }

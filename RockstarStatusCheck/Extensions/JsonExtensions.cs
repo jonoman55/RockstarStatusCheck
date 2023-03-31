@@ -2,7 +2,6 @@
 using RockstarStatusCheck.Enums;
 using RockstarStatusCheck.Handlers;
 using System;
-using System.Linq;
 
 namespace RockstarStatusCheck.Extensions
 {
@@ -38,13 +37,12 @@ namespace RockstarStatusCheck.Extensions
                 _ => Status.NA,
             };
 
-        public static JToken RockstartJsonToJToken(this string prop)
+        public static JToken RockstarJsonToJToken(this string prop)
         {
             if (string.IsNullOrEmpty(prop))
             {
                 throw new ArgumentException($"'{nameof(prop)}' cannot be null or empty.", nameof(prop));
             }
-
             string json = HttpHandler.GetRockstarServicesJson();
             return JObject.Parse(json)[prop];
         }
@@ -55,7 +53,6 @@ namespace RockstarStatusCheck.Extensions
             {
                 throw new ArgumentException($"'{nameof(json)}' cannot be null or empty.", nameof(json));
             }
-
             return JObject.Parse(json);
         }
     } 

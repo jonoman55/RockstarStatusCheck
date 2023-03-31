@@ -11,7 +11,6 @@ namespace RockstarStatusCheck.Extensions
             {
                 throw new ArgumentNullException(nameof(process));
             }
-
             try
             {
                 Process.GetProcessesByName(process.RemoveFileExtension());
@@ -20,7 +19,6 @@ namespace RockstarStatusCheck.Extensions
             {
                 return false;
             }
-
             return true;
         }
     }

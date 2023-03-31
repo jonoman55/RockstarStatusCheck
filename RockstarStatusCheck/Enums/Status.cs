@@ -2,6 +2,9 @@
 {
     public enum Status
     {
-        Limited, Down, Up, NA
+        Limited,
+        Down,
+        Up,
+        NA
     }
 }

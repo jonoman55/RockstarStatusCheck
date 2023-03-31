@@ -15,7 +15,11 @@ namespace RockstarStatusCheck.Logging
         /// <param name="print"></param>
         public static void AddEntry(string data, LogLevel level, bool print = false)
         {
-            AddEntries(print, new LogEntry() { Data = data, Level = level });
+            AddEntries(print, new LogEntry()
+            {
+                Data = data, 
+                Level = level 
+            });
         }
 
         /// <summary>

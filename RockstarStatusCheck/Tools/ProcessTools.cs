@@ -11,13 +11,12 @@ namespace RockstarStatusCheck.Tools
 
         public static int GetProcessId(string procName)
         {
-            foreach (var process in from Process process in Process.GetProcesses()
-                                    where process.ProcessName == procName
-                                    select process)
+            foreach (Process process in from Process process in Process.GetProcesses()
+                                        where process.ProcessName == procName
+                                        select process)
             {
                 return process.Id;
             }
-
             return 0;
         }
 
@@ -25,17 +24,11 @@ namespace RockstarStatusCheck.Tools
         {
             foreach (Process p in Process.GetProcessesByName(procName.RemoveFileExtension()))
             {
-                try
-                {
-                    if (procName.Contains(p.ProcessName))
-                    {
-                        return true;
-                    }
-                }
-                catch
+                if (!procName.Contains(p.ProcessName))
                 {
                     continue;
                 }
+                return true;
             }
             return false;
         }

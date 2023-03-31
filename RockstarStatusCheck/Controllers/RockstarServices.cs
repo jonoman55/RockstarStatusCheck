@@ -1,6 +1,7 @@
 ﻿using RockstarStatusCheck.Enums;
 using RockstarStatusCheck.Handlers;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace RockstarStatusCheck.Controllers
@@ -25,7 +26,7 @@ namespace RockstarStatusCheck.Controllers
         private static void ServicesCheck()
         {
             Console.WriteLine();
-            foreach (var (check, statuses) in EnumHandler.ForEachAll())
+            foreach ((string check, IEnumerable<Classes.ServicesPayload> statuses) in EnumHandler.ForEachAll())
             {
                 ConsoleHandler.WriteWithColor(check.ToString(), ConsoleColor.Magenta, LogLevel.Info);
                 ConsoleHandler.PrintAllServices(statuses);
@@ -43,7 +44,7 @@ namespace RockstarStatusCheck.Controllers
 
         private static void PlatformsCheck()
         {
-            foreach (var (check, statuses) in EnumHandler.ForEachPlatform())
+            foreach ((string check, IEnumerable<Classes.StatusesPayload> statuses) in EnumHandler.ForEachPlatform())
             {
                 ConsoleHandler.WriteWithColor(check.ToString(), ConsoleColor.Magenta, LogLevel.Info);
                 ConsoleHandler.PrintAllPlaforms(statuses);

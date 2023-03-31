@@ -2,6 +2,7 @@
 {
     public enum StatusType
     {
-        Services, Statuses
+        Services, 
+        Statuses
     }
 }

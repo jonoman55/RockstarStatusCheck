@@ -11,9 +11,6 @@ namespace RockstarStatusCheck.Classes
         public string Updated { get; set; }
         public Status Status { get; set; }
 
-        public override string ToString()
-        {
-            return $"{Name} is {Status}";
-        }
+        public override string ToString() => $"{Name} is {Status}";
     }
 }

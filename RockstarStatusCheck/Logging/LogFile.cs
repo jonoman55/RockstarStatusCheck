@@ -37,7 +37,6 @@ namespace RockstarStatusCheck.Logging
                 FileLocation = LogFileInfo.LogFileFullPath;
                 FolderPath = LogFileInfo.LogFilePath;
             }
-
             CreateLogFileDir();
         }
 
@@ -63,19 +62,15 @@ namespace RockstarStatusCheck.Logging
         /// </summary>
         public void CreateLogFile()
         {
-            LogEntry entry = new()
+            if (Directory.Exists(FolderPath))
             {
-                Data = $"{LogFileInfo.LogName}.exe initialized", // remove .log extension from FileName
-                Level = LogLevel.Info
-            };
-            string msg = entry.ToString();
-            string file = FileLocation;
-            string folder = FolderPath;
-            if (Directory.Exists(folder))
-            {
-                if (!File.Exists(file))
+                if (!File.Exists(FileLocation))
                 {
-                    LogFileTools.TextWriterNew(file, msg); // Create new log file if it doesn't exist
+                    LogFileTools.TextWriterNew(FileLocation, new LogEntry()
+                    {
+                        Data = $"{LogFileInfo.LogName}.exe initialized", // remove .log extension from FileName
+                        Level = LogLevel.Info
+                    }.ToString()); // Create new log file if it doesn't exist
                 }
             }
             else
@@ -95,23 +90,24 @@ namespace RockstarStatusCheck.Logging
                 string msg = entry.ToString();
                 string file = FileLocation;
                 string path = FolderPath;
-                if (Directory.Exists(path))
+                if (!Directory.Exists(path))
                 {
-                    if (!File.Exists(file))
+                    return;
+                }
+                if (!File.Exists(file))
+                {
+                    // Initial File Creation
+                    LogFileTools.TextWriterNew(file, msg);
+                }
+                else
+                {
+                    if (!CheckFileSize(file)) // Check the file size to see if it exceeds 10MB
                     {
-                        // Initial File Creation
-                        LogFileTools.TextWriterNew(file, msg);
+                        LogFileTools.TextWriterAppend(file, msg); // Create new log file
                     }
                     else
                     {
-                        if (!CheckFileSize(file)) // Check the file size to see if it exceeds 10MB
-                        {
-                            LogFileTools.TextWriterAppend(file, msg); // Create new log file
-                        }
-                        else
-                        {
-                            LogFileTools.TextWriterNew(file, msg); // Append to existing file
-                        }
+                        LogFileTools.TextWriterNew(file, msg); // Append to existing file
                     }
                 }
             }
