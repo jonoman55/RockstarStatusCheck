@@ -8,19 +8,40 @@ namespace RockstarStatusCheck.Logging
 {
     public class LogFile : ILogFile
     {
-        public string FileName { get; set; }
-        public string FileLocation { get; set; }
-        public string FileExt { get; set; }
-        public string FolderPath { get; set; }
+        private string fileName;
+        private string fileLocation;
+        private string fileExt;
+        private string folderPath;
+
+        public string FileName 
+        { 
+            get => fileName; 
+            set => fileName = value; 
+        }
+        public string FileLocation 
+        { 
+            get => fileLocation; 
+            set => fileLocation = value; 
+        }
+        public string FileExt 
+        { 
+            get => fileExt; 
+            set => fileExt = value; 
+        }
+        public string FolderPath 
+        { 
+            get => folderPath; 
+            set => folderPath = value; 
+        }
 
         /// <summary>
-        /// Creates a new instance of a LogFile <br />
-        /// File params can be specified but are optional <br />
-        /// App EXE name is assumed when not provided
+        /// Creates a new instance of a LogFile.<br />
+        /// File params can be specified but are optional.<br />
+        /// App EXE name is assumed when not provided.
         /// </summary>
-        /// <param name="fileName"></param>
-        /// <param name="filePath"></param>
-        /// <param name="fileExt"></param>                                             
+        /// <param name="fileName">Log file name</param>
+        /// <param name="filePath">Log file path</param>
+        /// <param name="fileExt">Log file extension - example: ".log"</param>                                             
         public LogFile(string fileName = "", string fileExt = "", string filePath = "")
         {
             if (!string.IsNullOrEmpty(fileName) && !string.IsNullOrEmpty(fileExt) && !string.IsNullOrEmpty(filePath)) // check to see if a file params were specified 
@@ -45,12 +66,10 @@ namespace RockstarStatusCheck.Logging
         /// </summary>
         public void CreateLogFileDir()
         {
-            string file = FileLocation;
-            string folder = FolderPath;
-            if (!Directory.Exists(folder))
+            if (!Directory.Exists(FolderPath))
             {
-                Directory.CreateDirectory(folder); // Create log directory if it doesn't exist
-                if (!File.Exists(file))
+                Directory.CreateDirectory(FolderPath); // Create log directory if it doesn't exist
+                if (!File.Exists(FileLocation))
                 {
                     CreateLogFile(); // Create log file if it doesn't exist
                 }
@@ -62,20 +81,20 @@ namespace RockstarStatusCheck.Logging
         /// </summary>
         public void CreateLogFile()
         {
-            if (Directory.Exists(FolderPath))
+            if (!Directory.Exists(FolderPath)) // Create the log file and folder if it doesn't exist  
             {
-                if (!File.Exists(FileLocation))
-                {
-                    LogFileTools.TextWriterNew(FileLocation, new LogEntry()
-                    {
-                        Data = $"{LogFileInfo.LogName}.exe initialized", // remove .log extension from FileName
-                        Level = LogLevel.Info
-                    }.ToString()); // Create new log file if it doesn't exist
-                }
+                CreateLogFileDir();      
             }
             else
             {
-                CreateLogFileDir(); // Create the log file and folder if it doesn't exist        
+                if (!File.Exists(FileLocation)) // Create a new log file if it doesn't exist
+                {
+                    LogFileTools.TextWriterNew(FileLocation, new LogEntry()
+                    {
+                        Data = $"{LogFileInfo.LogName}.exe initialized", // remove .log file extension from the file name
+                        Level = LogLevel.Info
+                    }.ToString());
+                }
             }
         }
 
@@ -85,7 +104,11 @@ namespace RockstarStatusCheck.Logging
         /// <param name="entry"></param>
         public void AddEntry(LogEntry entry)
         {
-            if (entry != null)
+            if (entry is null)
+            {
+                throw new ArgumentNullException(nameof(entry));
+            }
+            else
             {
                 string msg = entry.ToString();
                 string file = FileLocation;
@@ -96,7 +119,7 @@ namespace RockstarStatusCheck.Logging
                 }
                 if (!File.Exists(file))
                 {
-                    // Initial File Creation
+                    // Initial Log File Creation
                     LogFileTools.TextWriterNew(file, msg);
                 }
                 else
@@ -107,21 +130,17 @@ namespace RockstarStatusCheck.Logging
                     }
                     else
                     {
-                        LogFileTools.TextWriterNew(file, msg); // Append to existing file
+                        LogFileTools.TextWriterNew(file, msg); // Append to existing log file
                     }
                 }
-            }
-            else
-            {
-                throw new ArgumentNullException(nameof(entry)); // entry cannot be null
             }
         }
 
         /// <summary>
-        /// Checks the file the file size. 10MB is max.
+        /// Checks the log file size - 10MB is max.
         /// </summary>
-        /// <param name="file"></param>
-        /// <returns></returns>
+        /// <param name="file">Target file</param>
+        /// <returns>Boolean</returns>
         public bool CheckFileSize(string file) => LogFileTools.CheckFileSize(file); // File Size limit = 10MB
     }
 }

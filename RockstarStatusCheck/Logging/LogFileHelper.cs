@@ -7,12 +7,12 @@ namespace RockstarStatusCheck.Logging
     public class LogFileHelper
     {
         /// <summary>
-        /// Used for adding an entry to the log file without having to create a new LogFile object. <br />
+        /// Used for adding an entry to the log file without having to create a new LogFile object.<br />
         /// Pass true to print to Write message to the console window.
         /// </summary>
-        /// <param name="data"></param>
-        /// <param name="level"></param>
-        /// <param name="print"></param>
+        /// <param name="data">Log Entry data to be written to the log file</param>
+        /// <param name="level">Log Level</param>
+        /// <param name="print">Print Log Entry to the console - default is false</param>
         public static void AddEntry(string data, LogLevel level, bool print = false)
         {
             AddEntries(print, new LogEntry()
@@ -38,7 +38,6 @@ namespace RockstarStatusCheck.Logging
                     {
                         Console.WriteLine(e.Data); // Print message to console window if true
                     }
-
                 }
                 else
                 {

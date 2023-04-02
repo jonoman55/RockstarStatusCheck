@@ -101,9 +101,8 @@ namespace RockstarStatusCheck.Handlers
         }
 
         /// <summary>
-        /// Start a new Task for Console.ReadLine with specified timeout (TimeSpan).
-        /// <br />
-        /// If no user input is detected after the specified TimeSpan then the Task ends.
+        /// Start a new Task for Console.ReadLine with specified timeout (TimeSpan).<br />
+        /// If no user input is detected after the specified timeout then the Task ends.
         /// </summary>
         /// <param name="timeout">Timeout</param>
         public static string ConsoleReadLineWithTimeout(TimeSpan timeout)
@@ -111,7 +110,7 @@ namespace RockstarStatusCheck.Handlers
             Task<string> task = Task.Factory.StartNew(Console.ReadLine);
             return Task.WaitAny(new Task[] { task }, timeout) == 0
                 ? task.Result
-                : " ";
+                : "no input";
         }
     }
 }

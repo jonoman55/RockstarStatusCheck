@@ -24,11 +24,11 @@ namespace RockstarStatusCheck.Tools
         {
             foreach (Process p in Process.GetProcessesByName(procName.RemoveFileExtension()))
             {
-                if (!procName.Contains(p.ProcessName))
+                if (procName.Contains(p.ProcessName))
                 {
-                    continue;
+                    return true;
                 }
-                return true;
+                continue;
             }
             return false;
         }
